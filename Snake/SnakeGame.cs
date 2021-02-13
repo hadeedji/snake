@@ -9,7 +9,8 @@ namespace Snake {
 public class SnakeGame : Game {
     private int _windowHeight;
     private int _windowWidth;
-    
+    private Texture2D _texture;
+
     public GraphicsDeviceManager graphics { get; }
     public SpriteBatch spriteBatch { get; private set; }
 
@@ -22,8 +23,10 @@ public class SnakeGame : Game {
     protected override void Initialize() {
         _windowHeight = lineWidth + boardHeight * (lineWidth + cellSize);
         graphics.PreferredBackBufferHeight = _windowHeight;
+
         _windowWidth = lineWidth + boardWidth * (lineWidth + cellSize);
         graphics.PreferredBackBufferWidth = _windowWidth;
+
         graphics.ApplyChanges();
 
         base.Initialize();
@@ -31,6 +34,9 @@ public class SnakeGame : Game {
 
     protected override void LoadContent() {
         spriteBatch = new SpriteBatch(GraphicsDevice);
+
+        _texture = new Texture2D(GraphicsDevice, 1, 1);
+        _texture.SetData(new[] {Color.White});
     }
 
     protected override void Update(GameTime gameTime) {
