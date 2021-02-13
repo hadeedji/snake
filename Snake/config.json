@@ -4,5 +4,12 @@
     "Cell": 50,
     "Width": 10,
     "Height": 10
-  }
+  },
+  "Colors": {
+    "Background": "#2E3440",
+    "Wall": "#BF616A",
+    "Snake": "#88C0d0",
+    "Apple": "#A3BE8C"
+  },
+  "FPS": 144
 }

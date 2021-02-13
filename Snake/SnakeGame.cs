@@ -46,7 +46,7 @@ public class SnakeGame : Game {
     }
 
     protected override void Draw(GameTime gameTime) {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
+        GraphicsDevice.Clear(backgroundColor);
 
         base.Draw(gameTime);
     }
