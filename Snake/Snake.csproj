@@ -33,7 +33,7 @@
       </None>
     </ItemGroup>
     <ItemGroup>
-      <None Include="GameConfig.json">
+      <None Include="config.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

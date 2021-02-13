@@ -3,9 +3,13 @@ using System.Text.Json;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using static Snake.Configuration;
 
 namespace Snake {
 public class SnakeGame : Game {
+    private int _windowHeight;
+    private int _windowWidth;
+    
     public GraphicsDeviceManager graphics { get; }
     public SpriteBatch spriteBatch { get; private set; }
 
@@ -16,6 +20,12 @@ public class SnakeGame : Game {
     }
 
     protected override void Initialize() {
+        _windowHeight = lineWidth + boardHeight * (lineWidth + cellSize);
+        graphics.PreferredBackBufferHeight = _windowHeight;
+        _windowWidth = lineWidth + boardWidth * (lineWidth + cellSize);
+        graphics.PreferredBackBufferWidth = _windowWidth;
+        graphics.ApplyChanges();
+
         base.Initialize();
     }
 
