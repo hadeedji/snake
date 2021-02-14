@@ -5,13 +5,14 @@ using static Snake.Configuration;
 
 namespace Snake {
 public class Snake {
-    public Queue<SnakePiece> pieces { get; private set; }
-    public Direction direction;
     private readonly Queue<Direction> _inputQueue;
-
+    
+    public Direction direction;
+    public SnakePiece lastPiece;
+    
     private SnakePiece head => pieces.ToArray().Last();
 
-    public SnakePiece nextPiece { get; private set; }
+    public Queue<SnakePiece> pieces { get; private set; }
     public int progress { get; private set; }
 
     public Snake() {
@@ -26,7 +27,7 @@ public class Snake {
         pieces.Enqueue(new SnakePiece(boardWidth / 2 - 0, boardHeight / 2));
         head.outDirection = direction;
 
-        nextPiece = head + direction.Vector();
+        progress = cellSize + lineWidth;
     }
 
     public void Move(int pixels) {
@@ -34,16 +35,22 @@ public class Snake {
         if (progress <= cellSize + lineWidth) return;
         progress -= cellSize + lineWidth;
 
-        pieces.Dequeue();
-        pieces.Enqueue(nextPiece);
-
+        lastPiece = pieces.Dequeue();
         UpdateDirection();
-        nextPiece = head + direction.Vector();
+        var nextPiece = AssignNewPiece();
+        pieces.Enqueue(nextPiece);
+    }
+
+    private SnakePiece AssignNewPiece() {
         head.outDirection = direction;
+        var nextPiece = head + direction.Vector();
+        
         if (nextPiece.x < 0) nextPiece.x = boardWidth - 1;
         if (nextPiece.x > boardWidth - 1) nextPiece.x = 0;
         if (nextPiece.y < 0) nextPiece.y = boardHeight - 1;
         if (nextPiece.y > boardHeight - 1) nextPiece.y = 0;
+
+        return nextPiece;
     }
 
     private void UpdateDirection() {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -73,13 +74,13 @@ public class SnakeGame : Game {
         var cells = _snake.pieces.ToArray();
 
         spriteBatch.Begin();
-        spriteBatch.Draw(_texture, cells[0].Offset(cells[0].outDirection, _snake.progress), snakeColor);
+        spriteBatch.Draw(_texture,_snake.lastPiece.Offset(_snake.lastPiece.outDirection, _snake.progress), snakeColor);
 
-        for (int i = 1; i < cells.Length; i++) {
+        for (int i = 0; i < cells.Length - 1; i++) {
             spriteBatch.Draw(_texture, cells[i].rectangle, snakeColor);
         }
 
-        spriteBatch.Draw(_texture, _snake.nextPiece.Offset(_snake.direction.Opposite(),  cellSize - _snake.progress), snakeColor);
+        spriteBatch.Draw(_texture, cells.Last().Offset(_snake.direction.Opposite(),  cellSize - _snake.progress), snakeColor);
 
         spriteBatch.End();
         base.Draw(gameTime);
