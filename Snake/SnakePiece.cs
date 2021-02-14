@@ -58,7 +58,7 @@ public class SnakePiece {
             case (0, -1):
                 return new Rectangle(xInPixels, yInPixels - lineWidth, cellSize, lineWidth);
             default:
-                throw new ArgumentException("Pieces are not adjacent.");
+                return new Rectangle(0, 0, 0, 0);
         }
     }
 

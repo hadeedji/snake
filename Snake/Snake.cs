@@ -11,6 +11,7 @@ public class Snake {
     public Direction direction;
     public SnakePiece lastPiece;
     public SnakePiece apple;
+    public bool drawTrailing;
 
     private SnakePiece head => pieces.ToArray().Last();
 
@@ -30,6 +31,7 @@ public class Snake {
         head.outDirection = direction;
 
         apple = new SnakePiece(boardWidth / 2 + 3, boardHeight / 2);
+        drawTrailing = true;
 
         progress = cellSize + lineWidth;
     }
@@ -42,13 +44,18 @@ public class Snake {
         UpdateDirection();
         var nextPiece = AssignNewPiece();
 
-        if (nextPiece == apple) {
-            SpawnApple();
-        } else {
-            lastPiece = pieces.Dequeue();
+        if (pieces.Contains(nextPiece)) {
+            Environment.Exit(0);
         }
 
         pieces.Enqueue(nextPiece);
+        if (nextPiece == apple) {
+            SpawnApple();
+            drawTrailing = false;
+        } else {
+            lastPiece = pieces.Dequeue();
+            drawTrailing = true;
+        }
     }
 
     private void SpawnApple() {
@@ -71,12 +78,12 @@ public class Snake {
         head.outDirection = direction;
         var nextPiece = head + direction.Vector();
 
-        if (nextPiece.x < 0) nextPiece.x = boardWidth - 1;
-        if (nextPiece.x > boardWidth - 1) nextPiece.x = 0;
-        if (nextPiece.y < 0) nextPiece.y = boardHeight - 1;
-        if (nextPiece.y > boardHeight - 1) nextPiece.y = 0;
+        if (nextPiece.x < 0
+         || nextPiece.x > boardWidth - 1
+         || nextPiece.y < 0
+         || nextPiece.y > boardHeight - 1) Environment.Exit(0);
 
-        return nextPiece;
+            return nextPiece;
     }
 
     private void UpdateDirection() {

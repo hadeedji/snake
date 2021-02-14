@@ -74,23 +74,26 @@ public class SnakeGame : Game {
         var cells = _snake.pieces.ToArray();
 
         spriteBatch.Begin();
-        spriteBatch.Draw(_texture, _snake.lastPiece.Offset(_snake.lastPiece.outDirection, _snake.progress), snakeColor);
+        if (_snake.drawTrailing)
+            spriteBatch.Draw(_texture, _snake.lastPiece.Offset(_snake.lastPiece.outDirection, _snake.progress),
+                             snakeColor);
 
         for (int i = 0; i < cells.Length - 1; i++) {
             spriteBatch.Draw(_texture, cells[i].rectangle, snakeColor);
             if (i != cells.Length - 2) {
-                try {
                     spriteBatch.Draw(_texture, cells[i].LineBetween(cells[i + 1]), snakeColor);
-                } catch (ArgumentException e) {
-                    Console.WriteLine(e);
-                }
             }
         }
 
         spriteBatch.Draw(_texture, cells.Last().Offset(_snake.direction.Opposite(), cellSize - _snake.progress),
                          snakeColor);
-        
+
         spriteBatch.Draw(_texture, _snake.apple.rectangle, appleColor);
+        
+        spriteBatch.Draw(_texture,new Rectangle(0,0,_windowWidth, lineWidth),wallColor);
+        spriteBatch.Draw(_texture, new Rectangle(0,0,lineWidth, _windowHeight), wallColor);
+        spriteBatch.Draw(_texture, new Rectangle(_windowWidth - lineWidth, 0, lineWidth, _windowHeight), wallColor);
+        spriteBatch.Draw(_texture, new Rectangle(0, _windowHeight - lineWidth, _windowWidth, lineWidth), wallColor);
 
         spriteBatch.End();
         base.Draw(gameTime);
