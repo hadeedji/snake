@@ -89,6 +89,8 @@ public class SnakeGame : Game {
 
         spriteBatch.Draw(_texture, cells.Last().Offset(_snake.direction.Opposite(), cellSize - _snake.progress),
                          snakeColor);
+        
+        spriteBatch.Draw(_texture, _snake.apple.rectangle, appleColor);
 
         spriteBatch.End();
         base.Draw(gameTime);

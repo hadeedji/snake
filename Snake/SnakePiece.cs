@@ -62,6 +62,30 @@ public class SnakePiece {
         }
     }
 
+    protected bool Equals(SnakePiece other) {
+        return x == other.x && y == other.y;
+    }
+
+    public override bool Equals(object obj) {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        return Equals((SnakePiece) obj);
+    }
+
+    public override int GetHashCode() {
+        unchecked {
+            return (x * 397) ^ y;
+        }
+    }
+
+    public static bool operator ==(SnakePiece left, SnakePiece right) {
+        return Equals(left, right);
+    }
+
+    public static bool operator !=(SnakePiece left, SnakePiece right) {
+        return !Equals(left, right);
+    }
 
     public static SnakePiece operator +(SnakePiece piece, (int x, int y) vector) {
         return new SnakePiece(piece.x + vector.x, piece.y + vector.y);
