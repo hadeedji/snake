@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using static Snake.Configuration;
 
@@ -46,15 +47,20 @@ public class Snake {
     }
 
     private void UpdateDirection() {
+        Console.Clear();
+        for (int i = 0; i < _inputQueue.Count; i++) {
+            Console.WriteLine(_inputQueue.ToArray()[i]); 
+        }
         if (_inputQueue.Count != 0) {
             direction = _inputQueue.Dequeue();
         }
     }
 
     public void AddDirectionToQueue(Direction directionToAdd) {
-        if (_inputQueue.Count == 0) {
-            if (directionToAdd != direction) _inputQueue.Enqueue(directionToAdd);
-        } else if (directionToAdd != _inputQueue.ToArray().Last()) _inputQueue.Enqueue(directionToAdd);
+        var current = _inputQueue.Count == 0 ? direction : _inputQueue.ToArray().Last();
+        if (directionToAdd != current && directionToAdd != current.Opposite()) {
+            _inputQueue.Enqueue(directionToAdd);
+        }
     }
 }
 

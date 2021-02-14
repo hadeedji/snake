@@ -49,12 +49,11 @@ public class SnakeGame : Game {
     protected override void Update(GameTime gameTime) {
         if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
         if (Keyboard.GetState().IsKeyDown(Keys.Up)) _snake.AddDirectionToQueue(Direction.Up);
-        if (Keyboard.GetState().IsKeyDown(Keys.Down)) _snake.AddDirectionToQueue(Direction.Down);
-        if (Keyboard.GetState().IsKeyDown(Keys.Left)) _snake.AddDirectionToQueue(Direction.Left);
-        if (Keyboard.GetState().IsKeyDown(Keys.Right)) _snake.AddDirectionToQueue(Direction.Right);
+        else if (Keyboard.GetState().IsKeyDown(Keys.Down)) _snake.AddDirectionToQueue(Direction.Down);
+        else if (Keyboard.GetState().IsKeyDown(Keys.Left)) _snake.AddDirectionToQueue(Direction.Left);
+        else if (Keyboard.GetState().IsKeyDown(Keys.Right)) _snake.AddDirectionToQueue(Direction.Right);
 
         _pixelsToMove += (gameTime.ElapsedGameTime.TotalSeconds * _speed);
-        Console.WriteLine(_pixelsToMove);
 
         if (_pixelsToMove > 1) {
             var round = (int) Math.Round(_pixelsToMove,0);
