@@ -11,8 +11,8 @@ public class SnakeGame : Game {
     private int _windowHeight;
     private int _windowWidth;
     private Texture2D _texture;
-    private Snake _snake;
-    private int _speed;
+    Snake _snake;
+    public static int speed;
     private double _pixelsToMove;
 
     public GraphicsDeviceManager graphics { get; }
@@ -25,7 +25,7 @@ public class SnakeGame : Game {
         IsFixedTimeStep = true;
         TargetElapsedTime = TimeSpan.FromSeconds(1.0 / fps);
         _snake = new Snake();
-        _speed = 100;
+        speed = startingSpeed;
     }
 
     protected override void Initialize() {
@@ -54,7 +54,7 @@ public class SnakeGame : Game {
         else if (Keyboard.GetState().IsKeyDown(Keys.Left)) _snake.AddDirectionToQueue(Direction.Left);
         else if (Keyboard.GetState().IsKeyDown(Keys.Right)) _snake.AddDirectionToQueue(Direction.Right);
 
-        _pixelsToMove += (gameTime.ElapsedGameTime.TotalSeconds * _speed);
+        _pixelsToMove += (gameTime.ElapsedGameTime.TotalSeconds * speed);
 
         if (_pixelsToMove > 1) {
             var round = (int) Math.Round(_pixelsToMove, 0);

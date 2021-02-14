@@ -11,5 +11,10 @@
     "Snake": "#88C0d0",
     "Apple": "#A3BE8C"
   },
+  "Speed": {
+    "Starting": 100,
+    "Max": 400,
+    "Increment": 10
+  },
   "FPS": 144
 }

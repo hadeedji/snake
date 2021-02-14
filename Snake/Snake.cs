@@ -51,6 +51,9 @@ public class Snake {
         pieces.Enqueue(nextPiece);
         if (nextPiece == apple) {
             SpawnApple();
+            if (SnakeGame.speed < maxSpeed)
+                SnakeGame.speed += speedIncrement;
+            Console.WriteLine(SnakeGame.speed);
             drawTrailing = false;
         } else {
             lastPiece = pieces.Dequeue();
@@ -83,7 +86,7 @@ public class Snake {
          || nextPiece.y < 0
          || nextPiece.y > boardHeight - 1) Environment.Exit(0);
 
-            return nextPiece;
+        return nextPiece;
     }
 
     private void UpdateDirection() {

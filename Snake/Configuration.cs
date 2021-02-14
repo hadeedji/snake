@@ -17,6 +17,10 @@ public static class Configuration {
     public static Color wallColor { get; }
     public static Color snakeColor { get; }
     public static Color appleColor { get; }
+    
+    public static int startingSpeed { get; }
+    public static int maxSpeed { get; }
+    public static int speedIncrement { get; }
 
     static Configuration() {
         using (JsonDocument configurationFile = JsonDocument.Parse(File.ReadAllText("config.json"))) {
@@ -33,6 +37,11 @@ public static class Configuration {
             wallColor = ColorTranslator.FromHtml(colors.GetProperty("Wall").GetString()).ToXna();
             snakeColor = ColorTranslator.FromHtml(colors.GetProperty("Snake").GetString()).ToXna();
             appleColor = ColorTranslator.FromHtml(colors.GetProperty("Apple").GetString()).ToXna();
+
+            JsonElement speed = configurationFile.RootElement.GetProperty("Speed");
+            startingSpeed = speed.GetProperty("Starting").GetInt32();
+            maxSpeed = speed.GetProperty("Max").GetInt32();
+            speedIncrement = speed.GetProperty("Increment").GetInt32();
         }
     }
 
