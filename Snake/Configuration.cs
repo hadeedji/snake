@@ -6,6 +6,8 @@ using Color = Microsoft.Xna.Framework.Color;
 
 namespace Snake {
 public static class Configuration {
+    public static int fps { get; }
+
     public static int lineWidth { get; }
     public static int cellSize { get; }
     public static int boardWidth { get; }
@@ -18,6 +20,8 @@ public static class Configuration {
 
     static Configuration() {
         using (JsonDocument configurationFile = JsonDocument.Parse(File.ReadAllText("config.json"))) {
+            fps = configurationFile.RootElement.GetProperty("FPS").GetInt32();
+
             JsonElement dimensions = configurationFile.RootElement.GetProperty("Dimensions");
             lineWidth = dimensions.GetProperty("Line").GetInt32();
             cellSize = dimensions.GetProperty("Cell").GetInt32();
@@ -33,5 +37,35 @@ public static class Configuration {
     }
 
     private static Color ToXna(this System.Drawing.Color color) => new Color(color.R, color.G, color.B);
+
+    public static (int x, int y) Vector(this Direction direction) {
+        switch (direction) {
+            case Direction.Up:
+                return (0, -1);
+            case Direction.Down:
+                return (0, 1);
+            case Direction.Left:
+                return (-1, 0);
+            case Direction.Right:
+                return (1, 0);
+            default:
+                throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
+        }
+    }
+
+    public static Direction Opposite(this Direction direction) {
+        switch (direction) {
+            case Direction.Up:
+                return Direction.Down;
+            case Direction.Down:
+                return Direction.Up;
+            case Direction.Left:
+                return Direction.Right;
+            case Direction.Right:
+                return Direction.Left;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
+        }
+    }
 }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text.Json;
+using System.Globalization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,6 +10,9 @@ public class SnakeGame : Game {
     private int _windowHeight;
     private int _windowWidth;
     private Texture2D _texture;
+    private Snake _snake;
+    private int _speed;
+    private double _pixelsToMove;
 
     public GraphicsDeviceManager graphics { get; }
     public SpriteBatch spriteBatch { get; private set; }
@@ -18,6 +21,10 @@ public class SnakeGame : Game {
         graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = false;
+        IsFixedTimeStep = true;
+        TargetElapsedTime = TimeSpan.FromSeconds(1.0 / fps);
+        _snake = new Snake();
+        _speed = 100;
     }
 
     protected override void Initialize() {
@@ -41,13 +48,41 @@ public class SnakeGame : Game {
 
     protected override void Update(GameTime gameTime) {
         if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
+        if (Keyboard.GetState().IsKeyDown(Keys.Up)) _snake.AddDirectionToQueue(Direction.Up);
+        if (Keyboard.GetState().IsKeyDown(Keys.Down)) _snake.AddDirectionToQueue(Direction.Down);
+        if (Keyboard.GetState().IsKeyDown(Keys.Left)) _snake.AddDirectionToQueue(Direction.Left);
+        if (Keyboard.GetState().IsKeyDown(Keys.Right)) _snake.AddDirectionToQueue(Direction.Right);
+
+        _pixelsToMove += (gameTime.ElapsedGameTime.TotalSeconds * _speed);
+        Console.WriteLine(_pixelsToMove);
+
+        if (_pixelsToMove > 1) {
+            var round = (int) Math.Round(_pixelsToMove,0);
+            _snake.Move(round);
+            _pixelsToMove -= round;
+        }
+
 
         base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime) {
         GraphicsDevice.Clear(backgroundColor);
+        this.Window.Title =
+            $"Snake - {Math.Round(1.0 / gameTime.ElapsedGameTime.TotalSeconds, 0).ToString(CultureInfo.CurrentCulture)} FPS";
 
+        var cells = _snake.pieces.ToArray();
+
+        spriteBatch.Begin();
+        spriteBatch.Draw(_texture, cells[0].Offset(cells[0].outDirection, _snake.progress), snakeColor);
+
+        for (int i = 1; i < cells.Length; i++) {
+            spriteBatch.Draw(_texture, cells[i].rectangle, snakeColor);
+        }
+
+        spriteBatch.Draw(_texture, _snake.nextPiece.Offset(_snake.direction.Opposite(),  cellSize - _snake.progress), snakeColor);
+
+        spriteBatch.End();
         base.Draw(gameTime);
     }
 }
