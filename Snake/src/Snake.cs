@@ -23,23 +23,23 @@ public class Snake {
         _inputQueue = new Queue<Direction>();
         direction = Direction.Right;
 
-        pieces.Enqueue(new SnakePiece(boardWidth / 2 - 2, boardHeight / 2));
+        pieces.Enqueue(new SnakePiece(BoardWidth / 2 - 2, BoardHeight / 2));
         head.outDirection = direction;
-        pieces.Enqueue(new SnakePiece(boardWidth / 2 - 1, boardHeight / 2));
+        pieces.Enqueue(new SnakePiece(BoardWidth / 2 - 1, BoardHeight / 2));
         head.outDirection = direction;
-        pieces.Enqueue(new SnakePiece(boardWidth / 2 - 0, boardHeight / 2));
+        pieces.Enqueue(new SnakePiece(BoardWidth / 2 - 0, BoardHeight / 2));
         head.outDirection = direction;
 
-        apple = new SnakePiece(boardWidth / 2 + 3, boardHeight / 2);
+        apple = new SnakePiece(BoardWidth / 2 + 3, BoardHeight / 2);
         drawTrailing = true;
 
-        progress = cellSize + lineWidth;
+        progress = CellSize + LineWidth;
     }
 
     public void Move(int pixels) {
         progress += pixels;
-        if (progress <= cellSize + lineWidth) return;
-        progress -= cellSize + lineWidth;
+        if (progress <= CellSize + LineWidth) return;
+        progress -= CellSize + LineWidth;
 
         UpdateDirection();
         var nextPiece = AssignNewPiece();
@@ -51,8 +51,8 @@ public class Snake {
         pieces.Enqueue(nextPiece);
         if (nextPiece == apple) {
             SpawnApple();
-            if (SnakeGame.speed < maxSpeed)
-                SnakeGame.speed += speedIncrement;
+            if (SnakeGame.speed < MaxSpeed)
+                SnakeGame.speed += SpeedIncrement;
             Console.WriteLine(SnakeGame.speed);
             drawTrailing = false;
         } else {
@@ -63,8 +63,8 @@ public class Snake {
 
     private void SpawnApple() {
         List<SnakePiece> possibilities = new List<SnakePiece>();
-        for (int i = 0; i < boardWidth; i++) {
-            for (int j = 0; j < boardWidth; j++) {
+        for (int i = 0; i < BoardWidth; i++) {
+            for (int j = 0; j < BoardWidth; j++) {
                 var possibility = new SnakePiece(i, j);
                 var acceptable = true;
                 foreach (SnakePiece snakePiece in pieces)
@@ -82,9 +82,9 @@ public class Snake {
         var nextPiece = head + direction.Vector();
 
         if (nextPiece.x < 0
-         || nextPiece.x > boardWidth - 1
+         || nextPiece.x > BoardWidth - 1
          || nextPiece.y < 0
-         || nextPiece.y > boardHeight - 1) Environment.Exit(0);
+         || nextPiece.y > BoardHeight - 1) Environment.Exit(0);
 
         return nextPiece;
     }

@@ -23,16 +23,16 @@ public class SnakeGame : Game {
         Content.RootDirectory = "Content";
         IsMouseVisible = false;
         IsFixedTimeStep = true;
-        TargetElapsedTime = TimeSpan.FromSeconds(1.0 / fps);
+        TargetElapsedTime = TimeSpan.FromSeconds(1.0 / FramesPerSecond);
         _snake = new Snake();
-        speed = startingSpeed;
+        speed = StartingSpeed;
     }
 
     protected override void Initialize() {
-        _windowHeight = lineWidth + boardHeight * (lineWidth + cellSize);
+        _windowHeight = LineWidth + BoardHeight * (LineWidth + CellSize);
         graphics.PreferredBackBufferHeight = _windowHeight;
 
-        _windowWidth = lineWidth + boardWidth * (lineWidth + cellSize);
+        _windowWidth = LineWidth + BoardWidth * (LineWidth + CellSize);
         graphics.PreferredBackBufferWidth = _windowWidth;
 
         graphics.ApplyChanges();
@@ -67,7 +67,7 @@ public class SnakeGame : Game {
     }
 
     protected override void Draw(GameTime gameTime) {
-        GraphicsDevice.Clear(backgroundColor);
+        GraphicsDevice.Clear(BackgroundColor);
         var fps = Math.Round(1.0 / gameTime.ElapsedGameTime.TotalSeconds, 0).ToString(CultureInfo.CurrentCulture);
         this.Window.Title = $"Snake - {fps} FPS";
 
@@ -76,24 +76,24 @@ public class SnakeGame : Game {
         spriteBatch.Begin();
         if (_snake.drawTrailing)
             spriteBatch.Draw(_texture, _snake.lastPiece.Offset(_snake.lastPiece.outDirection, _snake.progress),
-                             snakeColor);
+                             SnakeColor);
 
         for (int i = 0; i < cells.Length - 1; i++) {
-            spriteBatch.Draw(_texture, cells[i].rectangle, snakeColor);
+            spriteBatch.Draw(_texture, cells[i].rectangle, SnakeColor);
             if (i != cells.Length - 2) {
-                    spriteBatch.Draw(_texture, cells[i].LineBetween(cells[i + 1]), snakeColor);
+                    spriteBatch.Draw(_texture, cells[i].LineBetween(cells[i + 1]), SnakeColor);
             }
         }
 
-        spriteBatch.Draw(_texture, cells.Last().Offset(_snake.direction.Opposite(), cellSize - _snake.progress),
-                         snakeColor);
+        spriteBatch.Draw(_texture, cells.Last().Offset(_snake.direction.Opposite(), CellSize - _snake.progress),
+                         SnakeColor);
 
-        spriteBatch.Draw(_texture, _snake.apple.rectangle, appleColor);
+        spriteBatch.Draw(_texture, _snake.apple.rectangle, AppleColor);
         
-        spriteBatch.Draw(_texture,new Rectangle(0,0,_windowWidth, lineWidth),wallColor);
-        spriteBatch.Draw(_texture, new Rectangle(0,0,lineWidth, _windowHeight), wallColor);
-        spriteBatch.Draw(_texture, new Rectangle(_windowWidth - lineWidth, 0, lineWidth, _windowHeight), wallColor);
-        spriteBatch.Draw(_texture, new Rectangle(0, _windowHeight - lineWidth, _windowWidth, lineWidth), wallColor);
+        spriteBatch.Draw(_texture,new Rectangle(0,0,_windowWidth, LineWidth),WallColor);
+        spriteBatch.Draw(_texture, new Rectangle(0,0,LineWidth, _windowHeight), WallColor);
+        spriteBatch.Draw(_texture, new Rectangle(_windowWidth - LineWidth, 0, LineWidth, _windowHeight), WallColor);
+        spriteBatch.Draw(_texture, new Rectangle(0, _windowHeight - LineWidth, _windowWidth, LineWidth), WallColor);
 
         spriteBatch.End();
         base.Draw(gameTime);

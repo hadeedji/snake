@@ -13,34 +13,34 @@ public class SnakePiece {
         this.y = y;
     }
 
-    private int xInPixels => lineWidth + x * (lineWidth + cellSize);
-    private int yInPixels => lineWidth + y * (lineWidth + cellSize);
+    private int xInPixels => LineWidth + x * (LineWidth + CellSize);
+    private int yInPixels => LineWidth + y * (LineWidth + CellSize);
 
     public Rectangle rectangle {
         get {
             return new Rectangle(xInPixels,
                                  yInPixels,
-                                 cellSize, cellSize);
+                                 CellSize, CellSize);
         }
     }
 
     public Rectangle Offset(Direction offsetDirection, int pixels) {
         switch (offsetDirection) {
             case Direction.Up:
-                return new Rectangle(lineWidth + x * (lineWidth + cellSize), y * (lineWidth + cellSize), cellSize,
-                                     lineWidth + cellSize - pixels);
+                return new Rectangle(LineWidth + x * (LineWidth + CellSize), y * (LineWidth + CellSize), CellSize,
+                                     LineWidth + CellSize - pixels);
             case Direction.Down:
-                return new Rectangle(lineWidth + x * (lineWidth + cellSize),
-                                     lineWidth + y * (lineWidth + cellSize) + pixels, cellSize,
-                                     lineWidth + cellSize - pixels);
+                return new Rectangle(LineWidth + x * (LineWidth + CellSize),
+                                     LineWidth + y * (LineWidth + CellSize) + pixels, CellSize,
+                                     LineWidth + CellSize - pixels);
             case Direction.Left:
-                return new Rectangle(x * (lineWidth + cellSize), lineWidth + y * (lineWidth + cellSize),
-                                     lineWidth + cellSize - pixels,
-                                     cellSize);
+                return new Rectangle(x * (LineWidth + CellSize), LineWidth + y * (LineWidth + CellSize),
+                                     LineWidth + CellSize - pixels,
+                                     CellSize);
             case Direction.Right:
-                return new Rectangle(lineWidth + x * (lineWidth + cellSize) + pixels,
-                                     lineWidth + y * (lineWidth + cellSize), lineWidth + cellSize - pixels,
-                                     cellSize);
+                return new Rectangle(LineWidth + x * (LineWidth + CellSize) + pixels,
+                                     LineWidth + y * (LineWidth + CellSize), LineWidth + CellSize - pixels,
+                                     CellSize);
             default:
                 throw new ArgumentOutOfRangeException(nameof(offsetDirection), offsetDirection, null);
         }
@@ -50,13 +50,13 @@ public class SnakePiece {
         var vector = piece - this;
         switch (vector) {
             case (1, 0):
-                return new Rectangle(xInPixels + cellSize, yInPixels, lineWidth, cellSize);
+                return new Rectangle(xInPixels + CellSize, yInPixels, LineWidth, CellSize);
             case (-1, 0):
-                return new Rectangle(xInPixels - lineWidth, yInPixels, lineWidth, cellSize);
+                return new Rectangle(xInPixels - LineWidth, yInPixels, LineWidth, CellSize);
             case (0, 1):
-                return new Rectangle(xInPixels, yInPixels + cellSize, cellSize, lineWidth);
+                return new Rectangle(xInPixels, yInPixels + CellSize, CellSize, LineWidth);
             case (0, -1):
-                return new Rectangle(xInPixels, yInPixels - lineWidth, cellSize, lineWidth);
+                return new Rectangle(xInPixels, yInPixels - LineWidth, CellSize, LineWidth);
             default:
                 return new Rectangle(0, 0, 0, 0);
         }
