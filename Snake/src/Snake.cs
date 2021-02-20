@@ -17,9 +17,11 @@ public class Snake {
 
     public Queue<SnakePiece> pieces { get; private set; }
     public int progress { get; private set; }
+    public int score { get; set; }
 
     public Snake() {
         pieces = new Queue<SnakePiece>();
+        score = 0;
         _inputQueue = new Queue<Direction>();
         direction = Direction.Right;
 
@@ -45,15 +47,15 @@ public class Snake {
         var nextPiece = AssignNewPiece();
 
         if (pieces.Contains(nextPiece)) {
-            Environment.Exit(0);
+            Die();
         }
 
         pieces.Enqueue(nextPiece);
         if (nextPiece == apple) {
             SpawnApple();
+            score++;
             if (SnakeGame.speed < MaxSpeed)
                 SnakeGame.speed += SpeedIncrement;
-            Console.WriteLine(SnakeGame.speed);
             drawTrailing = false;
         } else {
             lastPiece = pieces.Dequeue();
@@ -82,11 +84,16 @@ public class Snake {
         var nextPiece = head + direction.Vector();
 
         if (nextPiece.x < 0
-         || nextPiece.x > BoardWidth - 1
-         || nextPiece.y < 0
-         || nextPiece.y > BoardHeight - 1) Environment.Exit(0);
+            || nextPiece.x > BoardWidth - 1
+            || nextPiece.y < 0
+            || nextPiece.y > BoardHeight - 1) Die();
 
         return nextPiece;
+    }
+
+    private void Die() {
+        Console.WriteLine($"Score: {score}");
+        Environment.Exit(0);
     }
 
     private void UpdateDirection() {
