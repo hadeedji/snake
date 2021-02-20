@@ -49,6 +49,8 @@ public class SnakeGame : Game {
 
     protected override void Update(GameTime gameTime) {
         if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
+
+        // TODO: Fix Input handling.
         if (Keyboard.GetState().IsKeyDown(Keys.Up)) _snake.AddDirectionToQueue(Direction.Up);
         else if (Keyboard.GetState().IsKeyDown(Keys.Down)) _snake.AddDirectionToQueue(Direction.Down);
         else if (Keyboard.GetState().IsKeyDown(Keys.Left)) _snake.AddDirectionToQueue(Direction.Left);
@@ -89,7 +91,7 @@ public class SnakeGame : Game {
                          SnakeColor);
 
         spriteBatch.Draw(_texture, _snake.apple.rectangle, AppleColor);
-        
+
         spriteBatch.Draw(_texture,new Rectangle(0,0,_windowWidth, LineWidth),WallColor);
         spriteBatch.Draw(_texture, new Rectangle(0,0,LineWidth, _windowHeight), WallColor);
         spriteBatch.Draw(_texture, new Rectangle(_windowWidth - LineWidth, 0, LineWidth, _windowHeight), WallColor);
