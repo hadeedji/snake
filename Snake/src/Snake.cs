@@ -28,6 +28,7 @@ public class Snake {
 
         pieces.Enqueue(new SnakePiece(BoardWidth / 2 - 2, BoardHeight / 2));
         head.outDirection = direction;
+        lastPiece = head;
         pieces.Enqueue(new SnakePiece(BoardWidth / 2 - 1, BoardHeight / 2));
         head.outDirection = direction;
         pieces.Enqueue(new SnakePiece(BoardWidth / 2 - 0, BoardHeight / 2));
