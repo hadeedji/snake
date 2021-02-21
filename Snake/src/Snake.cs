@@ -67,7 +67,7 @@ public class Snake {
     private void SpawnApple() {
         List<SnakePiece> possibilities = new List<SnakePiece>();
         for (int i = 0; i < BoardWidth; i++) {
-            for (int j = 0; j < BoardWidth; j++) {
+            for (int j = 0; j < BoardHeight; j++) {
                 var possibility = new SnakePiece(i, j);
                 var acceptable = true;
                 foreach (SnakePiece snakePiece in pieces)

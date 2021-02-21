@@ -2,8 +2,8 @@
   "Dimensions": {
     "Line": 2,
     "Cell": 50,
-    "Width": 10,
-    "Height": 10
+    "Width": 15,
+    "Height": 15 
   },
   "Colors": {
     "Background": "#2E3440",
@@ -12,9 +12,9 @@
     "Apple": "#A3BE8C"
   },
   "Speed": {
-    "Starting": 100,
-    "Max": 400,
-    "Increment": 10
+    "Starting": 300,
+    "Max": 600,
+    "Increment": 20
   },
   "FPS": 144,
   "Walls" : true

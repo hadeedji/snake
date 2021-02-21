@@ -71,7 +71,7 @@ public class SnakeGame : Game {
     protected override void Draw(GameTime gameTime) {
         GraphicsDevice.Clear(BackgroundColor);
         var fps = Math.Round(1.0 / gameTime.ElapsedGameTime.TotalSeconds, 0).ToString(CultureInfo.CurrentCulture);
-        this.Window.Title = $"Snake - {fps} FPS";
+        this.Window.Title = $"Snake - {fps} FPS - Score: {_snake.score}";
 
         var cells = _snake.pieces.ToArray();
 
