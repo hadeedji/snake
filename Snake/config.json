@@ -16,5 +16,6 @@
     "Max": 400,
     "Increment": 10
   },
-  "FPS": 60
+  "FPS": 144,
+  "Walls" : true
 }

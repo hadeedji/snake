@@ -92,10 +92,12 @@ public class SnakeGame : Game {
 
         spriteBatch.Draw(_texture, _snake.apple.rectangle, AppleColor);
 
-        spriteBatch.Draw(_texture,new Rectangle(0,0,_windowWidth, LineWidth),WallColor);
-        spriteBatch.Draw(_texture, new Rectangle(0,0,LineWidth, _windowHeight), WallColor);
-        spriteBatch.Draw(_texture, new Rectangle(_windowWidth - LineWidth, 0, LineWidth, _windowHeight), WallColor);
-        spriteBatch.Draw(_texture, new Rectangle(0, _windowHeight - LineWidth, _windowWidth, LineWidth), WallColor);
+        if (WallsPresent) {
+            spriteBatch.Draw(_texture,new Rectangle(0,0,_windowWidth, LineWidth),WallColor);
+            spriteBatch.Draw(_texture, new Rectangle(0,0,LineWidth, _windowHeight), WallColor);
+            spriteBatch.Draw(_texture, new Rectangle(_windowWidth - LineWidth, 0, LineWidth, _windowHeight), WallColor);
+            spriteBatch.Draw(_texture, new Rectangle(0, _windowHeight - LineWidth, _windowWidth, LineWidth), WallColor);
+        }
 
         spriteBatch.End();
         base.Draw(gameTime);

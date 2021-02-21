@@ -4,9 +4,10 @@ using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace Snake {
 public class SnakePiece {
-    public int x;
-    public int y;
-    public Direction outDirection;
+    public int x { get;}
+    public int y { get;}
+
+    public Direction outDirection { get; set; }
 
     public SnakePiece(int x, int y) {
         this.x = x;
@@ -16,50 +17,35 @@ public class SnakePiece {
     private int xInPixels => LineWidth + x * (LineWidth + CellSize);
     private int yInPixels => LineWidth + y * (LineWidth + CellSize);
 
-    public Rectangle rectangle {
-        get {
-            return new Rectangle(xInPixels,
-                                 yInPixels,
-                                 CellSize, CellSize);
-        }
-    }
+    public Rectangle rectangle =>
+        new Rectangle(xInPixels, yInPixels, CellSize, CellSize);
 
-    public Rectangle Offset(Direction offsetDirection, int pixels) {
-        switch (offsetDirection) {
-            case Direction.Up:
-                return new Rectangle(LineWidth + x * (LineWidth + CellSize), y * (LineWidth + CellSize), CellSize,
-                                     LineWidth + CellSize - pixels);
-            case Direction.Down:
-                return new Rectangle(LineWidth + x * (LineWidth + CellSize),
-                                     LineWidth + y * (LineWidth + CellSize) + pixels, CellSize,
-                                     LineWidth + CellSize - pixels);
-            case Direction.Left:
-                return new Rectangle(x * (LineWidth + CellSize), LineWidth + y * (LineWidth + CellSize),
-                                     LineWidth + CellSize - pixels,
-                                     CellSize);
-            case Direction.Right:
-                return new Rectangle(LineWidth + x * (LineWidth + CellSize) + pixels,
-                                     LineWidth + y * (LineWidth + CellSize), LineWidth + CellSize - pixels,
-                                     CellSize);
-            default:
-                throw new ArgumentOutOfRangeException(nameof(offsetDirection), offsetDirection, null);
-        }
-    }
+    public Rectangle Offset(Direction offsetDirection, int pixels) =>
+        offsetDirection switch {
+            Direction.Up => new Rectangle(xInPixels, yInPixels - LineWidth,
+                                          CellSize, LineWidth + CellSize - pixels),
+
+            Direction.Down => new Rectangle(xInPixels, yInPixels + pixels,
+                                            CellSize, LineWidth + CellSize - pixels),
+
+            Direction.Left => new Rectangle(xInPixels - LineWidth, yInPixels,
+                                            LineWidth + CellSize - pixels, CellSize),
+
+            Direction.Right => new Rectangle(xInPixels + pixels, yInPixels,
+                                             LineWidth + CellSize - pixels, CellSize),
+
+            _ => throw new ArgumentOutOfRangeException(nameof(offsetDirection), offsetDirection, null)
+        };
 
     public Rectangle LineBetween(SnakePiece piece) {
         var vector = piece - this;
-        switch (vector) {
-            case (1, 0):
-                return new Rectangle(xInPixels + CellSize, yInPixels, LineWidth, CellSize);
-            case (-1, 0):
-                return new Rectangle(xInPixels - LineWidth, yInPixels, LineWidth, CellSize);
-            case (0, 1):
-                return new Rectangle(xInPixels, yInPixels + CellSize, CellSize, LineWidth);
-            case (0, -1):
-                return new Rectangle(xInPixels, yInPixels - LineWidth, CellSize, LineWidth);
-            default:
-                return new Rectangle(0, 0, 0, 0);
-        }
+        return vector switch {
+            (1, 0) => new Rectangle(xInPixels + CellSize, yInPixels, LineWidth, CellSize),
+            (-1, 0) => new Rectangle(xInPixels - LineWidth, yInPixels, LineWidth, CellSize),
+            (0, 1) => new Rectangle(xInPixels, yInPixels + CellSize, CellSize, LineWidth),
+            (0, -1) => new Rectangle(xInPixels, yInPixels - LineWidth, CellSize, LineWidth),
+            _ => new Rectangle(0, 0, 0, 0)
+        };
     }
 
     protected bool Equals(SnakePiece other) {

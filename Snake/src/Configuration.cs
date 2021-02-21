@@ -6,6 +6,7 @@ using Color = Microsoft.Xna.Framework.Color;
 namespace Snake {
 public static class Configuration {
     public static readonly int FramesPerSecond;
+    public static readonly bool WallsPresent;
 
     public static readonly int LineWidth;
     public static readonly int CellSize;
@@ -24,6 +25,7 @@ public static class Configuration {
     static Configuration() {
         using (JsonDocument configurationFile = JsonDocument.Parse(File.ReadAllText("config.json"))) {
             FramesPerSecond = configurationFile.RootElement.GetProperty("FPS").GetInt32();
+            WallsPresent = configurationFile.RootElement.GetProperty("Walls").GetBoolean();
 
             JsonElement dimensions = configurationFile.RootElement.GetProperty("Dimensions");
             LineWidth = dimensions.GetProperty("Line").GetInt32();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using static Snake.Configuration;
 
@@ -83,10 +84,26 @@ public class Snake {
         head.outDirection = direction;
         var nextPiece = head + direction.Vector();
 
-        if (nextPiece.x < 0
-            || nextPiece.x > BoardWidth - 1
-            || nextPiece.y < 0
-            || nextPiece.y > BoardHeight - 1) Die();
+        Direction? wallDirection = (nextPiece.x, nextPiece.y) switch {
+            (int x, _) when x < 0 => Direction.Left,
+            (_, int y) when y < 0 => Direction.Up,
+            (int x, _) when x >= BoardWidth => Direction.Right,
+            (_, int y) when y >= BoardHeight => Direction.Down,
+            _ => null
+        };
+
+        if (wallDirection.HasValue) {
+            if (WallsPresent)
+                Die();
+
+            nextPiece = wallDirection.Value switch {
+                Direction.Up => new SnakePiece(nextPiece.x, BoardHeight - 1),
+                Direction.Down => new SnakePiece(nextPiece.x, 0),
+                Direction.Left => new SnakePiece(BoardWidth - 1, nextPiece.y),
+                Direction.Right => new SnakePiece(0, nextPiece.y),
+            };
+        }
+
 
         return nextPiece;
     }
