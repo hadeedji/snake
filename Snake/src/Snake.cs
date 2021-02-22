@@ -25,22 +25,22 @@ public class Snake {
     public int progress { get; private set; }
     public int score { get; set; }
 
-    public Snake(Configuration configuration) {
-        this.configuration = configuration;
+    public Snake() {
+        this.configuration = SnakeGame.configuration;
         pieces = new Queue<SnakePiece>();
         score = 0;
         _inputQueue = new Queue<Direction>();
         direction = Direction.Right;
 
-        pieces.Enqueue(new SnakePiece(boardWidth / 2 - 2, boardHeight / 2, configuration));
+        pieces.Enqueue(new SnakePiece(boardWidth / 2 - 2, boardHeight / 2));
         head.outDirection = direction;
         lastPiece = head;
-        pieces.Enqueue(new SnakePiece(boardWidth / 2 - 1, boardHeight / 2, configuration));
+        pieces.Enqueue(new SnakePiece(boardWidth / 2 - 1, boardHeight / 2));
         head.outDirection = direction;
-        pieces.Enqueue(new SnakePiece(boardWidth / 2 - 0, boardHeight / 2, configuration));
+        pieces.Enqueue(new SnakePiece(boardWidth / 2 - 0, boardHeight / 2));
         head.outDirection = direction;
 
-        apple = new SnakePiece(boardWidth / 2 + 3, boardHeight / 2, configuration);
+        apple = new SnakePiece(boardWidth / 2 + 3, boardHeight / 2);
         drawTrailing = true;
 
         progress = cellSize + lineWidth;
@@ -75,7 +75,7 @@ public class Snake {
         List<SnakePiece> possibilities = new List<SnakePiece>();
         for (int i = 0; i < boardWidth; i++) {
             for (int j = 0; j < boardHeight; j++) {
-                var possibility = new SnakePiece(i, j, configuration);
+                var possibility = new SnakePiece(i, j);
                 var acceptable = true;
                 foreach (SnakePiece snakePiece in pieces)
                     if (possibility == snakePiece)
@@ -104,10 +104,10 @@ public class Snake {
                 Die();
 
             nextPiece = wallDirection.Value switch {
-                Direction.Up => new SnakePiece(nextPiece.x, boardHeight - 1, configuration),
-                Direction.Down => new SnakePiece(nextPiece.x, 0, configuration),
-                Direction.Left => new SnakePiece(boardWidth - 1, nextPiece.y, configuration),
-                Direction.Right => new SnakePiece(0, nextPiece.y, configuration),
+                Direction.Up => new SnakePiece(nextPiece.x, boardHeight - 1),
+                Direction.Down => new SnakePiece(nextPiece.x, 0),
+                Direction.Left => new SnakePiece(boardWidth - 1, nextPiece.y),
+                Direction.Right => new SnakePiece(0, nextPiece.y),
             };
         }
 

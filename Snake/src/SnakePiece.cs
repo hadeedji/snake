@@ -4,41 +4,41 @@ using Rectangle = Microsoft.Xna.Framework.Rectangle;
 namespace Snake {
 public class SnakePiece {
     private Configuration configuration { get; }
-    private int LineWidth => configuration.dimensions.line;
-    private int CellSize => configuration.dimensions.cell;
-    private int BoardHeight => configuration.dimensions.height;
-    private int BoardWidth => configuration.dimensions.width;
+    private int lineWidth => configuration.dimensions.line;
+    private int cellSize => configuration.dimensions.cell;
+    private int boardHeight => configuration.dimensions.height;
+    private int boardWidth => configuration.dimensions.width;
     
     public int x { get;}
     public int y { get;}
 
     public Direction outDirection { get; set; }
 
-    public SnakePiece(int x, int y, Configuration configuration) {
-        this.configuration = configuration;
+    public SnakePiece(int x, int y) {
+        this.configuration = SnakeGame.configuration;
         this.x = x;
         this.y = y;
     }
 
-    private int xInPixels => LineWidth + x * (LineWidth + CellSize);
-    private int yInPixels => LineWidth + y * (LineWidth + CellSize);
+    private int xInPixels => lineWidth + x * (lineWidth + cellSize);
+    private int yInPixels => lineWidth + y * (lineWidth + cellSize);
 
     public Rectangle rectangle =>
-        new Rectangle(xInPixels, yInPixels, CellSize, CellSize);
+        new Rectangle(xInPixels, yInPixels, cellSize, cellSize);
 
     public Rectangle Offset(Direction offsetDirection, int pixels) =>
         offsetDirection switch {
-            Direction.Up => new Rectangle(xInPixels, yInPixels - LineWidth,
-                                          CellSize, LineWidth + CellSize - pixels),
+            Direction.Up => new Rectangle(xInPixels, yInPixels - lineWidth,
+                                          cellSize, lineWidth + cellSize - pixels),
 
             Direction.Down => new Rectangle(xInPixels, yInPixels + pixels,
-                                            CellSize, LineWidth + CellSize - pixels),
+                                            cellSize, lineWidth + cellSize - pixels),
 
-            Direction.Left => new Rectangle(xInPixels - LineWidth, yInPixels,
-                                            LineWidth + CellSize - pixels, CellSize),
+            Direction.Left => new Rectangle(xInPixels - lineWidth, yInPixels,
+                                            lineWidth + cellSize - pixels, cellSize),
 
             Direction.Right => new Rectangle(xInPixels + pixels, yInPixels,
-                                             LineWidth + CellSize - pixels, CellSize),
+                                             lineWidth + cellSize - pixels, cellSize),
 
             _ => throw new ArgumentOutOfRangeException(nameof(offsetDirection), offsetDirection, null)
         };
@@ -46,10 +46,10 @@ public class SnakePiece {
     public Rectangle LineBetween(SnakePiece piece) {
         var vector = piece - this;
         return vector switch {
-            (1, 0) => new Rectangle(xInPixels + CellSize, yInPixels, LineWidth, CellSize),
-            (-1, 0) => new Rectangle(xInPixels - LineWidth, yInPixels, LineWidth, CellSize),
-            (0, 1) => new Rectangle(xInPixels, yInPixels + CellSize, CellSize, LineWidth),
-            (0, -1) => new Rectangle(xInPixels, yInPixels - LineWidth, CellSize, LineWidth),
+            (1, 0) => new Rectangle(xInPixels + cellSize, yInPixels, lineWidth, cellSize),
+            (-1, 0) => new Rectangle(xInPixels - lineWidth, yInPixels, lineWidth, cellSize),
+            (0, 1) => new Rectangle(xInPixels, yInPixels + cellSize, cellSize, lineWidth),
+            (0, -1) => new Rectangle(xInPixels, yInPixels - lineWidth, cellSize, lineWidth),
             _ => new Rectangle(0, 0, 0, 0)
         };
     }
@@ -80,7 +80,7 @@ public class SnakePiece {
     }
 
     public static SnakePiece operator +(SnakePiece piece, (int x, int y) vector) {
-        return new SnakePiece(piece.x + vector.x, piece.y + vector.y, piece.configuration);
+        return new SnakePiece(piece.x + vector.x, piece.y + vector.y);
     }
 
     public static (int x, int y) operator -(SnakePiece piece1, SnakePiece piece2) {

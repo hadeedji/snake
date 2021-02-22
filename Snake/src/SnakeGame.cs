@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Snake {
 public class SnakeGame : Game {
-    public Configuration configuration { get;  }
+    public static Configuration configuration { get; set; }
     private int lineWidth => configuration.dimensions.line;
     private int cellSize => configuration.dimensions.cell;
     private int boardHeight => configuration.dimensions.height;
@@ -23,14 +23,14 @@ public class SnakeGame : Game {
     public GraphicsDeviceManager graphics { get; }
     public SpriteBatch spriteBatch { get; private set; }
 
-    public SnakeGame(Configuration configuration) {
-        this.configuration = configuration;
+    public SnakeGame(Configuration inputConfiguration) {
+        configuration = inputConfiguration;
         graphics = new GraphicsDeviceManager(this);
         IsMouseVisible = false;
         IsFixedTimeStep = true;
         TargetElapsedTime = TimeSpan.FromSeconds(1.0 / configuration.framesPerSecond);
 
-        _snake = new Snake(configuration);
+        _snake = new Snake();
         speed = configuration.speed.starting;
     }
 
