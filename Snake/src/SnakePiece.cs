@@ -15,7 +15,7 @@ public class SnakePiece {
     public Direction outDirection { get; set; }
 
     public SnakePiece(int x, int y) {
-        this.configuration = SnakeGame.configuration;
+        this.configuration = MainGame.configuration;
         this.x = x;
         this.y = y;
     }

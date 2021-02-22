@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace Snake {
-public class SnakeGame : Game {
+public class MainGame : Game {
     public static Configuration configuration { get; set; }
     private int lineWidth => configuration.dimensions.line;
     private int cellSize => configuration.dimensions.cell;
@@ -23,7 +23,7 @@ public class SnakeGame : Game {
     public GraphicsDeviceManager graphics { get; }
     public SpriteBatch spriteBatch { get; private set; }
 
-    public SnakeGame(Configuration inputConfiguration) {
+    public MainGame(Configuration inputConfiguration) {
         configuration = inputConfiguration;
         graphics = new GraphicsDeviceManager(this);
         IsMouseVisible = false;

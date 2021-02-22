@@ -26,7 +26,7 @@ public class Snake {
     public int score { get; set; }
 
     public Snake() {
-        this.configuration = SnakeGame.configuration;
+        this.configuration = MainGame.configuration;
         pieces = new Queue<SnakePiece>();
         score = 0;
         _inputQueue = new Queue<Direction>();
@@ -62,8 +62,8 @@ public class Snake {
         if (nextPiece == apple) {
             SpawnApple();
             score++;
-            if (SnakeGame.speed < configuration.speed.maximum)
-                SnakeGame.speed += configuration.speed.increment;
+            if (MainGame.speed < configuration.speed.maximum)
+                MainGame.speed += configuration.speed.increment;
             drawTrailing = false;
         } else {
             lastPiece = pieces.Dequeue();
@@ -100,8 +100,7 @@ public class Snake {
         };
 
         if (wallDirection.HasValue) {
-            if (configuration.wallsPresent)
-                Die();
+            if (configuration.wallsPresent) Die();
 
             nextPiece = wallDirection.Value switch {
                 Direction.Up => new SnakePiece(nextPiece.x, boardHeight - 1),
