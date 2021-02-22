@@ -4,10 +4,15 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using static Snake.Configuration;
 
 namespace Snake {
 public class SnakeGame : Game {
+    public Configuration configuration { get;  }
+    private int lineWidth => configuration.dimensions.line;
+    private int cellSize => configuration.dimensions.cell;
+    private int boardHeight => configuration.dimensions.height;
+    private int boardWidth => configuration.dimensions.width;
+
     private int _windowHeight;
     private int _windowWidth;
     private Texture2D _texture;
@@ -18,21 +23,22 @@ public class SnakeGame : Game {
     public GraphicsDeviceManager graphics { get; }
     public SpriteBatch spriteBatch { get; private set; }
 
-    public SnakeGame() {
+    public SnakeGame(Configuration configuration) {
+        this.configuration = configuration;
         graphics = new GraphicsDeviceManager(this);
-        Content.RootDirectory = "Content";
         IsMouseVisible = false;
         IsFixedTimeStep = true;
-        TargetElapsedTime = TimeSpan.FromSeconds(1.0 / FramesPerSecond);
-        _snake = new Snake();
-        speed = StartingSpeed;
+        TargetElapsedTime = TimeSpan.FromSeconds(1.0 / configuration.framesPerSecond);
+
+        _snake = new Snake(configuration);
+        speed = configuration.speed.starting;
     }
 
     protected override void Initialize() {
-        _windowHeight = LineWidth + BoardHeight * (LineWidth + CellSize);
+        _windowHeight = lineWidth + boardHeight * (lineWidth + cellSize);
         graphics.PreferredBackBufferHeight = _windowHeight;
 
-        _windowWidth = LineWidth + BoardWidth * (LineWidth + CellSize);
+        _windowWidth = lineWidth + boardWidth * (lineWidth + cellSize);
         graphics.PreferredBackBufferWidth = _windowWidth;
 
         graphics.ApplyChanges();
@@ -69,7 +75,7 @@ public class SnakeGame : Game {
     }
 
     protected override void Draw(GameTime gameTime) {
-        GraphicsDevice.Clear(BackgroundColor);
+        GraphicsDevice.Clear(configuration.colors.background);
         var fps = Math.Round(1.0 / gameTime.ElapsedGameTime.TotalSeconds, 0).ToString(CultureInfo.CurrentCulture);
         this.Window.Title = $"Snake - {fps} FPS - Score: {_snake.score}";
 
@@ -78,25 +84,27 @@ public class SnakeGame : Game {
         spriteBatch.Begin();
         if (_snake.drawTrailing)
             spriteBatch.Draw(_texture, _snake.lastPiece.Offset(_snake.lastPiece.outDirection, _snake.progress),
-                             SnakeColor);
+                             configuration.colors.snake);
 
         for (int i = 0; i < cells.Length - 1; i++) {
-            spriteBatch.Draw(_texture, cells[i].rectangle, SnakeColor);
+            spriteBatch.Draw(_texture, cells[i].rectangle, configuration.colors.snake);
             if (i != cells.Length - 2) {
-                    spriteBatch.Draw(_texture, cells[i].LineBetween(cells[i + 1]), SnakeColor);
+                spriteBatch.Draw(_texture, cells[i].LineBetween(cells[i + 1]), configuration.colors.snake);
             }
         }
 
-        spriteBatch.Draw(_texture, cells.Last().Offset(_snake.direction.Opposite(), CellSize - _snake.progress),
-                         SnakeColor);
+        spriteBatch.Draw(_texture, cells.Last().Offset(_snake.direction.Opposite(), cellSize - _snake.progress),
+                         configuration.colors.snake);
 
-        spriteBatch.Draw(_texture, _snake.apple.rectangle, AppleColor);
+        spriteBatch.Draw(_texture, _snake.apple.rectangle, configuration.colors.apple);
 
-        if (WallsPresent) {
-            spriteBatch.Draw(_texture,new Rectangle(0,0,_windowWidth, LineWidth),WallColor);
-            spriteBatch.Draw(_texture, new Rectangle(0,0,LineWidth, _windowHeight), WallColor);
-            spriteBatch.Draw(_texture, new Rectangle(_windowWidth - LineWidth, 0, LineWidth, _windowHeight), WallColor);
-            spriteBatch.Draw(_texture, new Rectangle(0, _windowHeight - LineWidth, _windowWidth, LineWidth), WallColor);
+        if (configuration.wallsPresent) {
+            spriteBatch.Draw(_texture, new Rectangle(0, 0, _windowWidth, lineWidth), configuration.colors.wall);
+            spriteBatch.Draw(_texture, new Rectangle(0, 0, lineWidth, _windowHeight), configuration.colors.wall);
+            spriteBatch.Draw(_texture, new Rectangle(_windowWidth - lineWidth, 0, lineWidth, _windowHeight),
+                             configuration.colors.wall);
+            spriteBatch.Draw(_texture, new Rectangle(0, _windowHeight - lineWidth, _windowWidth, lineWidth),
+                             configuration.colors.wall);
         }
 
         spriteBatch.End();

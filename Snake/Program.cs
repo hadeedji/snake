@@ -5,7 +5,8 @@ public static class Program {
     
     [STAThread]
     static void Main() {
-        using (var game = new SnakeGame())
+        Configuration jsonConfiguration = new JsonConfiguration("config.json");
+        using (var game = new SnakeGame(jsonConfiguration))
             game.Run();
     }
 }

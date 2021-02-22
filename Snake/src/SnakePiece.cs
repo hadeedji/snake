@@ -1,15 +1,21 @@
 ﻿using System;
-using static Snake.Configuration;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace Snake {
 public class SnakePiece {
+    private Configuration configuration { get; }
+    private int LineWidth => configuration.dimensions.line;
+    private int CellSize => configuration.dimensions.cell;
+    private int BoardHeight => configuration.dimensions.height;
+    private int BoardWidth => configuration.dimensions.width;
+    
     public int x { get;}
     public int y { get;}
 
     public Direction outDirection { get; set; }
 
-    public SnakePiece(int x, int y) {
+    public SnakePiece(int x, int y, Configuration configuration) {
+        this.configuration = configuration;
         this.x = x;
         this.y = y;
     }
@@ -74,7 +80,7 @@ public class SnakePiece {
     }
 
     public static SnakePiece operator +(SnakePiece piece, (int x, int y) vector) {
-        return new SnakePiece(piece.x + vector.x, piece.y + vector.y);
+        return new SnakePiece(piece.x + vector.x, piece.y + vector.y, piece.configuration);
     }
 
     public static (int x, int y) operator -(SnakePiece piece1, SnakePiece piece2) {
