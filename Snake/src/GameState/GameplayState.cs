@@ -18,19 +18,19 @@ public class GameplayState : State {
     private int cellSize => configuration.dimensions.cell;
     private int boardHeight => configuration.dimensions.height;
     private int boardWidth => configuration.dimensions.width;
-    
+
     private int windowHeight { get; }
     private int windowWidth { get; }
-    
+
     public GameplayState(Game game, SpriteBatch spriteBatch) {
         (this.game, this.spriteBatch) = (game, spriteBatch);
 
         snake = new Snake();
-        
+
         pixelTexture = new Texture2D(game.GraphicsDevice, 1, 1);
         pixelTexture.SetData(new[] {Color.White});
         pixelsToMove = 0;
-        
+
         windowHeight = lineWidth + boardHeight * (lineWidth + cellSize);
         windowWidth = lineWidth + boardWidth * (lineWidth + cellSize);
     }
@@ -68,7 +68,9 @@ public class GameplayState : State {
         for (int i = 0; i < cells.Length - 1; i++) {
             spriteBatch.Draw(pixelTexture, cells[i].rectangle, configuration.colors.snake);
             if (i != cells.Length - 2) {
-                spriteBatch.Draw(pixelTexture, cells[i].LineBetween(cells[i + 1]), configuration.colors.snake);
+                var line = cells[i].LineBetween(cells[i + 1]);
+                if (line.HasValue)
+                    spriteBatch.Draw(pixelTexture, line.Value, configuration.colors.snake);
             }
         }
 

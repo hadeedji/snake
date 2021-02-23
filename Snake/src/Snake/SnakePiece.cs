@@ -44,14 +44,14 @@ public class SnakePiece {
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    public Rectangle LineBetween(SnakePiece piece) {
+    public Rectangle? LineBetween(SnakePiece piece) {
         var vector = piece - this;
         return vector switch {
             (1, 0) => new Rectangle(xInPixels + cellSize, yInPixels, lineWidth, cellSize),
             (-1, 0) => new Rectangle(xInPixels - lineWidth, yInPixels, lineWidth, cellSize),
             (0, 1) => new Rectangle(xInPixels, yInPixels + cellSize, cellSize, lineWidth),
             (0, -1) => new Rectangle(xInPixels, yInPixels - lineWidth, cellSize, lineWidth),
-            _ => throw new ArgumentOutOfRangeException()
+            _ => null
         };
     }
 
