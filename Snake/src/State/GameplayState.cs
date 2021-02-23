@@ -8,10 +8,26 @@ using static Snake.Program;
 
 namespace Snake {
 public class GameplayState : State {
-    private Game game { get; }
-    private SpriteBatch spriteBatch { get; }
-    private Snake snake { get; set; }
-    private Texture2D pixelTexture { get; set; }
+    public GameplayState(Game game, SpriteBatch spriteBatch) : base(game, spriteBatch) {
+        snake = new Snake();
+        snake.OnSnakeDeath += () => {
+            GameOver gameOver = new(game, spriteBatch){score = snake.score};
+            gameOver.AddStateChanger(stateChanged);
+            stateChanged(gameOver);
+        };
+
+        pixelTexture = new Texture2D(game.GraphicsDevice, 1, 1);
+        pixelTexture.SetData(new[] {Color.White});
+
+        pixelsToMove = 0;
+
+        windowHeight = lineWidth + boardHeight * (lineWidth + cellSize);
+        windowWidth = lineWidth + boardWidth * (lineWidth + cellSize);
+    }
+
+    private Snake snake { get; }
+    private Texture2D pixelTexture { get; }
+
     private double pixelsToMove { get; set; }
 
     private int lineWidth => configuration.dimensions.line;
@@ -21,19 +37,6 @@ public class GameplayState : State {
 
     private int windowHeight { get; }
     private int windowWidth { get; }
-
-    public GameplayState(Game game, SpriteBatch spriteBatch) {
-        (this.game, this.spriteBatch) = (game, spriteBatch);
-
-        snake = new Snake();
-
-        pixelTexture = new Texture2D(game.GraphicsDevice, 1, 1);
-        pixelTexture.SetData(new[] {Color.White});
-        pixelsToMove = 0;
-
-        windowHeight = lineWidth + boardHeight * (lineWidth + cellSize);
-        windowWidth = lineWidth + boardWidth * (lineWidth + cellSize);
-    }
 
     public override void Update(GameTime gameTime) {
         if (Keyboard.GetState().IsKeyDown(Keys.Escape)) game.Exit();

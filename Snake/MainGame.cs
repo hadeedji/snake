@@ -7,15 +7,16 @@ namespace Snake {
 public class MainGame : Game {
     public MainGame() {
         graphics = new GraphicsDeviceManager(this);
+        Content.RootDirectory = "Content";
 
         IsMouseVisible = false;
         IsFixedTimeStep = true;
         TargetElapsedTime = TimeSpan.FromSeconds(1.0 / configuration.framesPerSecond);
     }
 
-    public GraphicsDeviceManager graphics { get; }
-    public SpriteBatch spriteBatch { get; private set; }
+    private GraphicsDeviceManager graphics { get; }
 
+    private SpriteBatch spriteBatch { get; set; }
     private State currentGameState { get; set; }
 
     protected override void Initialize() {
@@ -39,6 +40,7 @@ public class MainGame : Game {
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
         currentGameState = new GameplayState(this, spriteBatch);
+        currentGameState.AddStateChanger(state => currentGameState = state);
     }
 
     protected override void Update(GameTime gameTime) {

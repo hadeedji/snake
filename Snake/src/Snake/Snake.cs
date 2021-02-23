@@ -27,6 +27,8 @@ public class Snake {
         drawTrailing = true;
     }
 
+    public event Action OnSnakeDeath;
+
     public Queue<Direction> inputQueue { get; }
     public Random random { get; }
 
@@ -118,8 +120,7 @@ public class Snake {
     }
 
     private void Die() {
-        Console.WriteLine($"Score: {score}");
-        Environment.Exit(0);
+        OnSnakeDeath?.Invoke();
     }
 
     private void UpdateDirection() {
