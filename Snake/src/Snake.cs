@@ -1,50 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using static Snake.Program;
 
 namespace Snake {
 public class Snake {
-    private Configuration configuration { get; }
+    public Snake() {
+        inputQueue = new Queue<Direction>();
+        random = new Random();
+        
+        pieces = new Queue<SnakePiece>();
+        direction = Direction.Right;
+        
+        for (int i = 2; i >= 0; i--) {
+            var piece = new SnakePiece(boardWidth / 2 - i, boardHeight / 2);
+            piece.outDirection = direction;
+            pieces.Enqueue(piece);
+        }
+        
+        lastPiece = pieces.Peek();
+        apple = new SnakePiece(boardWidth / 2 + 3, boardHeight / 2);
+        
+        score = 0;
+        currentSpeed = configuration.speed.starting;
+        progress = cellSize + lineWidth;
+        drawTrailing = true;
+    }
+    
+    public Queue<Direction> inputQueue { get; }
+    public Random random { get; }
+    
+    public Queue<SnakePiece> pieces { get; private set; }
+    public Direction direction { get; private set; }
+    public SnakePiece lastPiece { get; private set; }
+    public SnakePiece apple { get; private set; }
+    
+    public int score { get; private set; }
+    public int currentSpeed { get; private set; }
+    public int progress { get; private set; }
+    public bool drawTrailing { get; private set; }
+
     private int lineWidth => configuration.dimensions.line;
     private int cellSize => configuration.dimensions.cell;
     private int boardHeight => configuration.dimensions.height;
     private int boardWidth => configuration.dimensions.width;
-
-    private readonly Queue<Direction> _inputQueue;
-    private readonly Random _random = new Random();
-
-    public Direction direction;
-    public SnakePiece lastPiece;
-    public SnakePiece apple;
-    public bool drawTrailing;
-
+    
     private SnakePiece head => pieces.ToArray().Last();
-
-    public Queue<SnakePiece> pieces { get; private set; }
-    public int progress { get; private set; }
-    public int score { get; set; }
-
-    public Snake() {
-        this.configuration = MainGame.configuration;
-        pieces = new Queue<SnakePiece>();
-        score = 0;
-        _inputQueue = new Queue<Direction>();
-        direction = Direction.Right;
-
-        pieces.Enqueue(new SnakePiece(boardWidth / 2 - 2, boardHeight / 2));
-        head.outDirection = direction;
-        lastPiece = head;
-        pieces.Enqueue(new SnakePiece(boardWidth / 2 - 1, boardHeight / 2));
-        head.outDirection = direction;
-        pieces.Enqueue(new SnakePiece(boardWidth / 2 - 0, boardHeight / 2));
-        head.outDirection = direction;
-
-        apple = new SnakePiece(boardWidth / 2 + 3, boardHeight / 2);
-        drawTrailing = true;
-
-        progress = cellSize + lineWidth;
-    }
+    
 
     public void Move(int pixels) {
         progress += pixels;
@@ -62,8 +64,8 @@ public class Snake {
         if (nextPiece == apple) {
             SpawnApple();
             score++;
-            if (MainGame.speed < configuration.speed.maximum)
-                MainGame.speed += configuration.speed.increment;
+            if (currentSpeed < configuration.speed.maximum)
+                currentSpeed += configuration.speed.increment;
             drawTrailing = false;
         } else {
             lastPiece = pieces.Dequeue();
@@ -84,7 +86,7 @@ public class Snake {
             }
         }
 
-        apple = possibilities.ToArray()[_random.Next(possibilities.Count)];
+        apple = possibilities.ToArray()[random.Next(possibilities.Count)];
     }
 
     private SnakePiece AssignNewPiece() {
@@ -92,10 +94,10 @@ public class Snake {
         var nextPiece = head + direction.Vector();
 
         Direction? wallDirection = (nextPiece.x, nextPiece.y) switch {
-            (int x, _) when x < 0 => Direction.Left,
-            (_, int y) when y < 0 => Direction.Up,
-            (int x, _) when x >= boardWidth => Direction.Right,
-            (_, int y) when y >= boardHeight => Direction.Down,
+            (var x, _) when x < 0 => Direction.Left,
+            (_, var y) when y < 0 => Direction.Up,
+            (var x, _) when x >= boardWidth => Direction.Right,
+            (_, var y) when y >= boardHeight => Direction.Down,
             _ => null
         };
 
@@ -107,6 +109,7 @@ public class Snake {
                 Direction.Down => new SnakePiece(nextPiece.x, 0),
                 Direction.Left => new SnakePiece(boardWidth - 1, nextPiece.y),
                 Direction.Right => new SnakePiece(0, nextPiece.y),
+                _ => throw new ArgumentOutOfRangeException()
             };
         }
 
@@ -120,15 +123,15 @@ public class Snake {
     }
 
     private void UpdateDirection() {
-        if (_inputQueue.Count != 0) {
-            direction = _inputQueue.Dequeue();
+        if (inputQueue.Count != 0) {
+            direction = inputQueue.Dequeue();
         }
     }
 
     public void AddDirectionToQueue(Direction directionToAdd) {
-        var current = _inputQueue.Count == 0 ? direction : _inputQueue.ToArray().Last();
+        var current = inputQueue.Count == 0 ? direction : inputQueue.ToArray().Last();
         if (directionToAdd != current && directionToAdd != current.Opposite()) {
-            _inputQueue.Enqueue(directionToAdd);
+            inputQueue.Enqueue(directionToAdd);
         }
     }
 }

@@ -1,30 +1,27 @@
 ﻿using System;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using static Snake.Program;
 
 namespace Snake {
 public class SnakePiece {
-    private Configuration configuration { get; }
-    private int lineWidth => configuration.dimensions.line;
-    private int cellSize => configuration.dimensions.cell;
-    private int boardHeight => configuration.dimensions.height;
-    private int boardWidth => configuration.dimensions.width;
-    
-    public int x { get;}
-    public int y { get;}
-
-    public Direction outDirection { get; set; }
-
     public SnakePiece(int x, int y) {
-        this.configuration = MainGame.configuration;
         this.x = x;
         this.y = y;
     }
 
+    public int x { get; }
+    public int y { get; }
+
+    public Rectangle rectangle => new Rectangle(xInPixels, yInPixels, cellSize, cellSize);
+
+    public Direction outDirection { get; set; }
+
+    private int lineWidth => configuration.dimensions.line;
+    private int cellSize => configuration.dimensions.cell;
+
     private int xInPixels => lineWidth + x * (lineWidth + cellSize);
     private int yInPixels => lineWidth + y * (lineWidth + cellSize);
 
-    public Rectangle rectangle =>
-        new Rectangle(xInPixels, yInPixels, cellSize, cellSize);
 
     public Rectangle Offset(Direction offsetDirection, int pixels) =>
         offsetDirection switch {
