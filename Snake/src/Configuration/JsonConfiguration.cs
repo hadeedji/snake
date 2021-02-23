@@ -28,10 +28,10 @@ public class JsonConfiguration : Configuration {
 
             JsonElement colorsElement = configurationFile.RootElement.GetProperty("Colors");
             colors = new Colors() {
-                background = ColorTranslator.FromHtml(colorsElement.GetProperty("Background").GetString()).ToXna(),
-                wall = ColorTranslator.FromHtml(colorsElement.GetProperty("Wall").GetString()).ToXna(),
-                snake = ColorTranslator.FromHtml(colorsElement.GetProperty("Snake").GetString()).ToXna(),
-                apple = ColorTranslator.FromHtml(colorsElement.GetProperty("Apple").GetString()).ToXna()
+                background = ColorTranslator.FromHtml(colorsElement.GetProperty("Background").GetString()!).ToXna(),
+                wall = ColorTranslator.FromHtml(colorsElement.GetProperty("Wall").GetString()!).ToXna(),
+                snake = ColorTranslator.FromHtml(colorsElement.GetProperty("Snake").GetString()!).ToXna(),
+                apple = ColorTranslator.FromHtml(colorsElement.GetProperty("Apple").GetString()!).ToXna()
             };
 
             JsonElement speedElement = configurationFile.RootElement.GetProperty("Speed");

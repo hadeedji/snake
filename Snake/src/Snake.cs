@@ -8,33 +8,33 @@ public class Snake {
     public Snake() {
         inputQueue = new Queue<Direction>();
         random = new Random();
-        
+
         pieces = new Queue<SnakePiece>();
         direction = Direction.Right;
-        
+
         for (int i = 2; i >= 0; i--) {
             var piece = new SnakePiece(boardWidth / 2 - i, boardHeight / 2);
             piece.outDirection = direction;
             pieces.Enqueue(piece);
         }
-        
+
         lastPiece = pieces.Peek();
         apple = new SnakePiece(boardWidth / 2 + 3, boardHeight / 2);
-        
+
         score = 0;
         currentSpeed = configuration.speed.starting;
         progress = cellSize + lineWidth;
         drawTrailing = true;
     }
-    
+
     public Queue<Direction> inputQueue { get; }
     public Random random { get; }
-    
+
     public Queue<SnakePiece> pieces { get; private set; }
     public Direction direction { get; private set; }
     public SnakePiece lastPiece { get; private set; }
     public SnakePiece apple { get; private set; }
-    
+
     public int score { get; private set; }
     public int currentSpeed { get; private set; }
     public int progress { get; private set; }
@@ -44,9 +44,9 @@ public class Snake {
     private int cellSize => configuration.dimensions.cell;
     private int boardHeight => configuration.dimensions.height;
     private int boardWidth => configuration.dimensions.width;
-    
+
     private SnakePiece head => pieces.ToArray().Last();
-    
+
 
     public void Move(int pixels) {
         progress += pixels;

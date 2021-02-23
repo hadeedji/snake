@@ -13,12 +13,12 @@ public class MainGame : Game {
         windowHeight = lineWidth + boardHeight * (lineWidth + cellSize);
         windowWidth = lineWidth + boardWidth * (lineWidth + cellSize);
         snake = new Snake();
-        
+
         IsMouseVisible = false;
         IsFixedTimeStep = true;
         TargetElapsedTime = TimeSpan.FromSeconds(1.0 / configuration.framesPerSecond);
     }
-    
+
     public GraphicsDeviceManager graphics { get; }
     public SpriteBatch spriteBatch { get; private set; }
 
@@ -26,11 +26,11 @@ public class MainGame : Game {
     private int cellSize => configuration.dimensions.cell;
     private int boardHeight => configuration.dimensions.height;
     private int boardWidth => configuration.dimensions.width;
-    
+
     private int windowHeight { get; }
     private int windowWidth { get; }
     private Snake snake { get; }
-    
+
     private Texture2D pixelTexture { get; set; }
     private double pixelsToMove { get; set; }
 
