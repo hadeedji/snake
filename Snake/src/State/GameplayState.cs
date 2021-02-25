@@ -10,11 +10,7 @@ namespace Snake {
 public class GameplayState : State {
     public GameplayState(Game game, SpriteBatch spriteBatch) : base(game, spriteBatch) {
         snake = new Snake();
-        snake.OnSnakeDeath += () => {
-            GameOver gameOver = new(game, spriteBatch){score = snake.score};
-            gameOver.AddStateChanger(stateChanged);
-            stateChanged(gameOver);
-        };
+        snake.OnSnakeDeath += () => stateChanged(new GameOver(game, spriteBatch) {score = snake.score});
 
         pixelTexture = new Texture2D(game.GraphicsDevice, 1, 1);
         pixelTexture.SetData(new[] {Color.White});

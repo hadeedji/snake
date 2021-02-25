@@ -7,7 +7,7 @@ public abstract class State {
     public State(Game game, SpriteBatch spriteBatch) =>
         (this.game, this.spriteBatch) = (game, spriteBatch);
 
-    protected Action<State> stateChanged { get; private set; }
+    protected static Action<State> stateChanged { get; private set; }
 
     protected Game game { get; }
     protected SpriteBatch spriteBatch { get; }

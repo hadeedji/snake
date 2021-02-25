@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -8,25 +7,21 @@ public class GameOver : State {
     public GameOver(Game game, SpriteBatch spriteBatch) : base(game, spriteBatch) {
         font = game.Content.Load<SpriteFont>("Font");
     }
-    
+
     public int score { get; init; }
 
     private SpriteFont font { get; }
 
     public override void Update(GameTime gameTime) {
-        if (Keyboard.GetState().IsKeyDown(Keys.Enter)) {
-            GameplayState gameplayState = new(game, spriteBatch);
-            gameplayState.AddStateChanger(this.stateChanged);
-            stateChanged(gameplayState);
-        }
+        if (Keyboard.GetState().IsKeyDown(Keys.Enter)) stateChanged(new GameplayState(game, spriteBatch));
     }
 
     public override void Draw(GameTime gameTime) {
-       game.GraphicsDevice.Clear(Color.Black);
+        game.GraphicsDevice.Clear(Color.Black);
 
-       spriteBatch.Begin();
-       spriteBatch.DrawString(font, $"Score: {score}", new Vector2(300,300), Color.White);
-       spriteBatch.End();
+        spriteBatch.Begin();
+        spriteBatch.DrawString(font, $"Score: {score}", new Vector2(300, 300), Color.White);
+        spriteBatch.End();
     }
 }
 }
