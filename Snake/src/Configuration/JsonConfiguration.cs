@@ -5,13 +5,6 @@ using Color = Microsoft.Xna.Framework.Color;
 
 namespace Snake {
 public class JsonConfiguration : Configuration {
-    public int framesPerSecond { get; }
-    public bool wallsPresent { get; }
-
-    public Dimensions dimensions { get; }
-    public Colors colors { get; }
-    public Speeds speed { get; }
-
     public JsonConfiguration(string filePath) {
         using (JsonDocument configurationFile = JsonDocument.Parse(File.ReadAllText(filePath))) {
             framesPerSecond = configurationFile.RootElement.GetProperty("FPS").GetInt32();

@@ -9,7 +9,6 @@ public class MainGame : Game {
         graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
 
-        IsMouseVisible = false;
         IsFixedTimeStep = true;
         TargetElapsedTime = TimeSpan.FromSeconds(1.0 / configuration.framesPerSecond);
     }

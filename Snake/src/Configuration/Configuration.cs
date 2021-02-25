@@ -1,13 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 
 namespace Snake {
-public interface Configuration {
-    public int framesPerSecond { get; }
-    public bool wallsPresent { get; }
+public abstract class Configuration {
+    public int framesPerSecond { get; init; }
+    public bool wallsPresent { get; init; }
 
-    public Dimensions dimensions { get; }
-    public Colors colors { get; }
-    public Speeds speed { get; }
+    public Dimensions dimensions { get; init; }
+    public Colors colors { get; init; }
+    public Speeds speed { get; init; }
 }
 
 public readonly struct Dimensions {

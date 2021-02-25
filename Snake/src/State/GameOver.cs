@@ -13,6 +13,7 @@ public class GameOver : State {
     private SpriteFont font { get; }
 
     public override void Update(GameTime gameTime) {
+        if (Keyboard.GetState().IsKeyDown(Keys.Escape)) game.Exit();
         if (Keyboard.GetState().IsKeyDown(Keys.Enter)) stateChanged(new GameplayState(game, spriteBatch));
     }
 
