@@ -23,8 +23,9 @@ public class GameplayState : State {
 
     private Snake snake { get; }
     private Texture2D pixelTexture { get; }
-
+    
     private double pixelsToMove { get; set; }
+    private bool isPressed { get; set; }
 
     private int lineWidth => configuration.dimensions.line;
     private int cellSize => configuration.dimensions.cell;
@@ -36,6 +37,8 @@ public class GameplayState : State {
 
     public override void Update(GameTime gameTime) {
         if (Keyboard.GetState().IsKeyDown(Keys.Escape)) game.Exit();
+        if (!Keyboard.GetState().IsKeyDown(Keys.P)) isPressed = false;
+        if (!isPressed && Keyboard.GetState().IsKeyDown(Keys.P)) stateChanged(new Pause(game, spriteBatch, this));
 
         // TODO: Fix Input handling.
         if (Keyboard.GetState().IsKeyDown(Keys.Up)) snake.AddDirectionToQueue(Direction.Up);
@@ -88,6 +91,10 @@ public class GameplayState : State {
         }
 
         spriteBatch.End();
+    }
+
+    protected override void ChangedInto() {
+        isPressed = true;
     }
 }
 }
